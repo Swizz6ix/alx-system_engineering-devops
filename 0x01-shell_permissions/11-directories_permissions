@@ -1,2 +1,2 @@
-5B#!/bin/bash
+#!/bin/bash
 chmod ugo+X ./*
