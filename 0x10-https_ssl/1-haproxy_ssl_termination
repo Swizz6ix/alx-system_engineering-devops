@@ -1,0 +1,61 @@
+bdbaraban
+/
+holberton-system_engineering-devops
+Public
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Breadcrumbsholberton-system_engineering-devops/0x10-https_ssl
+/2-haproxy_ssl_termination
+Latest commit
+234761
+234761
+4 years ago
+History
+Executable File·40 lines (35 loc) · 1017 Bytes
+Breadcrumbsholberton-system_engineering-devops/0x10-https_ssl
+/2-haproxy_ssl_termination
+File metadata and controls
+
+Code
+
+Blame
+global
+    log     /dev/log local0
+    maxconn 2048
+    user    haproxy
+    group   haproxy
+    tune.ssl.default-dh-param 2048
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option  redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+    option  forwardfor
+    option  http-server-close
+frontend www-http
+    bind   0.0.0.0:80
+    reqadd X-Forwarded-Proto:\ http
+    default_backend www-backend
+frontend www-https
+    bind   0.0.0.0:443 ssl crt /etc/haproxy/certs/www.bdbnb.site.pem
+    reqadd X-Forwarded-Proto:\ https
+    acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
+    use_backend letsencrypt-backend if letsencrypt-acl
+    default_backend www-backend
+backend www-backend
+    balance  roundrobin
+    redirect scheme https if !{ ssl_fc }
+    server 375-web-01 54.174.245.101:80 check
+    server 375-web-02 100.25.45.220:80 check
+backend letsencrypt-backend
+    server letsencrypt 127.0.0.1:54321
