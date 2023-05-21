@@ -9,7 +9,7 @@ sudo apt-get install -y nginx
 
 sudo mkdir /etc/nginx/html
 sudo touch /etc/nginx/html/index.html
-sudo bash -c 'echo "Hello World" > /var/nginx/html/index.html'
+sudo bash -c 'echo "Hello World!" > /var/nginx/html/index.html'
 sudo bash -c 'printf %s "server {
      listen      80 default_server;
      listen      [::]:80 default_server;
